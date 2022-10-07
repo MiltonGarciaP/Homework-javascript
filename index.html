@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Local Storage</title>
+</head>
+
+<style>
+
+    .beestadistica{
+        color: black;
+        background-color: blue;
+    }
+
+     #listanotas{
+         border: solid 1px silver;
+         width: 100%;
+     }
+
+     #listanotas thead{
+      background: black;
+      color: red;
+
+     }
+    
+    .Tema{
+
+        text-align: center;
+    }
+
+    .TablaP{
+        color: red;
+        background-color: black;
+    }
+
+    .bguardar{
+        color: black;
+        background-color: green;
+    }
+
+    .beditar{
+        color: black;
+        background-color: yellow;
+    }
+
+    .beleliminar{
+        color: black;
+        background-color: Red;
+    }
+
+
+
+    
+</style>
+<body>
+    <h3 class="Tema">Datos de la Nota del Estudiante</h3>
+    <table class="TablaP" border="4">
+        <tr>
+            <th>Matricula</th>
+            <td>
+                <input type="number" id="txtMatricula">
+            </td>
+        </tr>
+        <tr>
+            <th>Nombre</th>
+            <td>
+                <input type="text" id="txtNombre">
+            </td>
+        </tr>
+        <tr>
+            <th>Nota 1</th>
+            <td>
+                <input type="number" id="txtNota1">
+            </td>
+        </tr>
+        <tr>
+            <th>Nota 2</th>
+            <td>
+                <input type="number" id="txtNota2">
+            </td>
+        </tr>
+        <tr>
+            <th>Nota 3</th>
+            <td>
+                <input type="number" id="txtNota3">
+            </td>
+        </tr>
+        <tr>
+            <th>Nota 4</th>
+            <td>
+                <input type="number" id="txtNota4">
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">
+                <button onclick="agregarestu();" class="bguardar" type="submit">Agregar</button>
+                <button class="beditar" type="submit">Editar</button>
+                <button onclick="borrardatos()"; class="beleliminar" type="submit">Eliminar</button>
+                <button class="beestadistica" type="submit">Estadistica</button>
+
+            </td>
+        </tr>
+
+
+    </table>
+
+    <hr/>
+
+    <table id="listanotas">
+        <thead>
+            <tr>
+                <th>Matricula</th>
+                <th>Nombre</th>
+                <th>Nota 1</th>
+                <th>Nota 2</th>
+                <th>Nota 3</th>
+                <th>Nota 4</th>
+                <th>Promedio</th>
+                <th>EQ</th>
+
+            </tr>
+
+        </thead>
+        <tbody id="tbDatos">
+
+        </tbody>
+    </table>
+    
+    <script>
+
+
+function limpiarformulario(){
+ campos = document.getElementsByTagName('Input');
+ for (x = 0 ; x < campos.length; x++){
+     campos[x].value = "";
+ }
+
+
+}
+
+
+
+     
+
+
+     var Estudiantes = [];
+
+     function agregarestu(){
+         Estudiante = [];
+
+         Estudiante.push(document.getElementById('txtMatricula').value);
+         Estudiante.push(document.getElementById('txtNombre').value);
+         Estudiante.push(document.getElementById('txtNota1').value);
+         Estudiante.push(document.getElementById('txtNota2').value);
+         Estudiante.push(document.getElementById('txtNota3').value);
+         Estudiante.push(document.getElementById('txtNota4').value);
+         
+         
+
+         Estudiantes.push(Estudiante);
+
+         datos = JSON.stringify(Estudiantes);
+         localStorage.setItem('Registro',datos);
+         limpiarformulario();
+         mostrardatos();
+
+
+     }
+        
+        
+
+
+     function mostrardatos (){
+
+         destino = document.getElementById('tbDatos');
+         destino.innerHTML = "";
+
+         for(x = 0; x < Estudiantes.length ; x++){
+             
+             tr = document.createElement('tr');
+             Estudiante = Estudiantes[x];
+             
+             for(y=0;  y< Estudiante.length; y++){
+                 dato = Estudiante[y];
+                 td = document.createElement('td');
+                 td.innerHTML = dato;
+                 tr.appendChild(td);
+             }
+
+             destino.appendChild(tr);
+         }
+         
+
+         
+
+
+     }
+
+     function borrardatos()
+     {
+       localStorage.clear();
+       location.reload();
+       mostrardatos();
+
+     }
+
+     datos = localStorage.getItem('Registro');
+     if(datos != null){
+         Estudiantes = JSON.parse(datos)
+         mostrardatos();
+     }
+
+     
+    </script>
+    
+</body>
+</html>
